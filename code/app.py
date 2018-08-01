@@ -50,12 +50,14 @@ def is_request_valid(request):
 
 @app.route('/' + APPLICATION_ROOT + '/freesound/', methods=['POST'])
 def freesound_command():
+    print(request.args.get('text'))
+
     if not is_request_valid(request):
         abort(400)
 
     return jsonify(
         response_type='in_channel',
-        text='<https://youtu.be/frszEJb0aOo|General Kenobi!>',
+        text='<https://freesound.org/s/1234|Sound name>',
     )
 
 
