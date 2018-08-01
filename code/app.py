@@ -1,6 +1,6 @@
 import os
 import freesound
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, jsonify, abort
 
 
 HOST = os.getenv('HOST', '0.0.0.0')
@@ -45,6 +45,8 @@ def is_request_valid(request):
 
 
 # VIEWS
+
+# From https://renzo.lucioni.xyz/serverless-slash-commands-with-python/
 
 @app.route('/' + APPLICATION_ROOT + '/freesound/', methods=['POST'])
 def freesound_command():
