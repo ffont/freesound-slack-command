@@ -1,5 +1,6 @@
 import os
 import freesound
+import random
 from flask import Flask, request, jsonify, abort
 
 
@@ -44,22 +45,45 @@ def is_request_valid(request):
     return is_token_valid and is_team_id_valid
 
 
+def query_freesound(query_terms):
+    results_pager = freesound_client.text_search(
+        query=query_terms,
+        fields="id,name,previews,username,url",
+        page_size=50,
+    )
+    sounds = list()
+    for result in results_pager:
+        sounds.append(result)
+    sound = random.choice(sounds)
+    return sound
+
+
+
 # VIEWS
 
 # From https://renzo.lucioni.xyz/serverless-slash-commands-with-python/
 
 @app.route('/%s/' % APPLICATION_ROOT, methods=['POST'])
-def freesound_command():
-    print(request.values)
-
+def command_handler():
     if not is_request_valid(request):
         abort(400)
 
-    return jsonify(
-        response_type='in_channel',
-        text='<iframe frameborder="0" scrolling="no" src="https://freesound.org/embed/sound/iframe/1234/simple/small/" width="375" height="30"></iframe>',
-    )
+    command = request.values['command']
+    args = request.values['text']
 
+    if command == '/freesound':
+        try:
+            sound = query_freesound(args)
+            return jsonify(
+                response_type='in_channel',
+                text='[{0}]({1}) by [{2}]({3})'.format(sound.name, sound.url, sound.username, 'https://freesound.org/people/' + sound.username),
+            )
+
+        except Exception as e:
+            return jsonify(
+                response_type='ephemeral',
+                text='Oups, there was an error... ({0})'.format(e)
+            )
 
 
 # RUN FLASK
