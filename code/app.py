@@ -83,31 +83,31 @@ def command_handler():
             if sound:
                 return jsonify(
                     response_type='in_channel',
-                    attachments={
+                    attachments=[{
                         'color': '#F31C36',
                         'author_name': sound.username,
                         'author_link': 'https://freesound.org/people/' + sound.username,
                         'title': sound.name,
                         'title_link': sound.url,
                         'image_url': sound.images['spectral_m'],
-                    }
+                    }]
                 )
             else:
                 return jsonify(
                     response_type='ephemeral',
-                    attachments={
+                    attachments=[{
                         'color': '#F31C36',
                         'text': 'No sounds found for this query...'
-                    }
+                    }]
                 )
 
         except Exception as e:
             return jsonify(
                 response_type='ephemeral',
-                attachments={
+                attachments=[{
                     'color': '#F31C36',
                     'text': 'Oups, there was an error... ({0})'.format(e)
-                }
+                }]
             )
 
 
