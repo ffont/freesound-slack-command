@@ -85,10 +85,7 @@ def command_handler():
                     response_type='in_channel',
                     attachments=[{
                         'color': '#F31C36',
-                        'author_name': sound.username,
-                        'author_link': 'https://freesound.org/people/' + sound.username,
-                        'title': sound.name,
-                        'title_link': sound.url,
+                        'text': '<{1}|{0}> by <{3}|{2}>'.format(sound.name, sound.url, sound.username, 'https://freesound.org/people/' + sound.username),
                         'image_url': sound.images.spectral_m,
                     }]
                 )
