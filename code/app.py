@@ -48,16 +48,16 @@ def is_request_valid(request):
 
 # From https://renzo.lucioni.xyz/serverless-slash-commands-with-python/
 
-@app.route('/' + APPLICATION_ROOT + '/freesound/', methods=['POST'])
+@app.route('/%s/' % APPLICATION_ROOT, methods=['POST'])
 def freesound_command():
-    print(request.args.get('text'))
+    print(request.values)
 
     if not is_request_valid(request):
         abort(400)
 
     return jsonify(
         response_type='in_channel',
-        text='<https://freesound.org/s/1234|Sound name>',
+        text='<iframe frameborder="0" scrolling="no" src="https://freesound.org/embed/sound/iframe/1234/simple/small/" width="375" height="30"></iframe>',
     )
 
 
