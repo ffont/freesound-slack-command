@@ -13,9 +13,9 @@ SLACK_VERIFICATION_TOKEN = os.getenv('SLACK_VERIFICATION_TOKEN', '')
 SLACK_TEAM_ID = os.getenv('SLACK_TEAM_ID', '')
 
 try:
-    FS_CLIENT_ID = os.environ['FS_CLIENT_ID']
+    FS_API_KEY = os.environ['FS_API_KEY']
 except KeyError:
-    raise Exception("Environment variables FS_CLIENT_ID not properly set.")
+    raise Exception("Environment variables FS_API_KEY not properly set.")
 
 app = Flask(__name__)
 
@@ -32,7 +32,7 @@ def configure_freesound():
     client = None
     try:
         client = freesound.FreesoundClient()
-        client.set_token(FS_CLIENT_ID)
+        client.set_token(FS_API_KEY)
         log('Freesound configured successfully!')
     except Exception as e:
         log('Could not connect to Freesound... %s' % str(e))
