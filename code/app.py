@@ -83,7 +83,7 @@ def command_handler():
             if sound:
                 return jsonify(
                     response_type='in_channel',
-                    mrkdwn=True,-----
+                    mrkdwn=True,
                     text='[{0}]({1}) by [{2}]({3})'.format(sound.name, sound.url, sound.username, 'https://freesound.org/people/' + sound.username),
                 )
             else:
