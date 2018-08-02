@@ -32,7 +32,7 @@ def configure_freesound():
     client = None
     try:
         client = freesound.FreesoundClient()
-        client.set_token(access_token, auth_type='token')
+        client.set_token(FS_CLIENT_ID, auth_type='token')
         log('Freesound configured successfully!')
     except Exception as e:
         log('Could not connect to Freesound... %s' % str(e))
@@ -76,6 +76,7 @@ def command_handler():
             sound = query_freesound(args)
             return jsonify(
                 response_type='in_channel',
+                mrkdwn=True,-----
                 text='[{0}]({1}) by [{2}]({3})'.format(sound.name, sound.url, sound.username, 'https://freesound.org/people/' + sound.username),
             )
 
