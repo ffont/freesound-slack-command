@@ -86,7 +86,8 @@ def command_handler():
                     attachments=[{
                         'color': '#F31C36',
                         'text': '<{1}|{0}> by <{3}|{2}>'.format(sound.name, sound.url, sound.username, 'https://freesound.org/people/' + sound.username),
-                        'image_url': sound.images.spectral_m,
+                        'fallback': '{0} by {1}'.format(sound.name, sound.username),
+                        'image_url': sound.images.spectral_l,
                     }]
                 )
             else:
