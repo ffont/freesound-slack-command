@@ -32,7 +32,7 @@ def configure_freesound():
     client = None
     try:
         client = freesound.FreesoundClient()
-        client.set_token(FS_CLIENT_ID, auth_type='token')
+        client.set_token(FS_CLIENT_ID)
         log('Freesound configured successfully!')
     except Exception as e:
         log('Could not connect to Freesound... %s' % str(e))
@@ -54,8 +54,14 @@ def query_freesound(query_terms):
     sounds = list()
     for result in results_pager:
         sounds.append(result)
-    sound = random.choice(sounds)
-    return sound
+    if sounds:
+        if query_terms.isdigit():
+            # If query is a digit, return first results as we assume the digit is a Freesound ID
+            return sounds[0]
+        else:
+            # Otherwise return a random sound from the results
+            return random.choice(sounds)
+    return None
 
 
 
@@ -74,11 +80,17 @@ def command_handler():
     if command == '/freesound':
         try:
             sound = query_freesound(args)
-            return jsonify(
-                response_type='in_channel',
-                mrkdwn=True,-----
-                text='[{0}]({1}) by [{2}]({3})'.format(sound.name, sound.url, sound.username, 'https://freesound.org/people/' + sound.username),
-            )
+            if sound:
+                return jsonify(
+                    response_type='in_channel',
+                    mrkdwn=True,-----
+                    text='[{0}]({1}) by [{2}]({3})'.format(sound.name, sound.url, sound.username, 'https://freesound.org/people/' + sound.username),
+                )
+            else:
+                return jsonify(
+                    response_type='ephemeral',
+                    text='No sounds found for this query...'
+                )
 
         except Exception as e:
             return jsonify(
